@@ -1,6 +1,12 @@
 {
-    "name": "you/ticketapp-twig",
-    "require": {
-        "twig/twig": "^3.0"
+  "name": "holupeter/ticketapp-twig",
+  "description": "Ticket management app using Twig templating",
+  "require": {
+    "twig/twig": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
     }
+  }
 }
