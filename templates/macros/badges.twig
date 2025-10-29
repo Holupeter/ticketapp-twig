@@ -1,0 +1,8 @@
+{% macro status_badge(status) %}
+  {% set cls = {
+    'open':'status-open',
+    'in_progress':'status-in_progress',
+    'closed':'status-closed'
+  }[status] | default('') %}
+  <span class="{{ cls }}">{{ status|replace({'_':' '}) }}</span>
+{% endmacro %}

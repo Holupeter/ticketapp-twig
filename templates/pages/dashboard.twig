@@ -1,0 +1,12 @@
+{% extends 'base.twig' %}
+{% block title %}Dashboard — TicketApp{% endblock %}
+{% block content %}
+<section class="container-center py-8" data-protected="true">
+  <h1 style="margin:0 0 12px 0;">Dashboard</h1>
+  <div id="dashboardStats" style="display:flex;gap:12px;"></div>
+
+  <div style="margin-top:18px;">
+    <a href="/tickets" class="btn">Manage Tickets</a>
+  </div>
+</section>
+{% endblock %}
