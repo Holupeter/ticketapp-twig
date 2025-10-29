@@ -3,7 +3,7 @@
 ## 🔗 Cross-Framework Links
 
 * [React Version README → ](https://github.com/Holupeter/React-ticketapp/blob/main/README.md)
-* [Vue Version README → ](https://github.com/Holupeter/ticketapp-twig/blob/main/README.md)
+* [Vue Version README → ](https://github.com/Holupeter/ticketapp-vue/blob/main/README.md)
 
 ## Overview
 Server-rendered Twig application + small client-side JS that provides:
