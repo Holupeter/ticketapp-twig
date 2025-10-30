@@ -1,0 +1,7 @@
+vendor
+node_modules
+public/assets/css/output.css
+.env
+.git
+.DS_Store
+npm-debug.log
