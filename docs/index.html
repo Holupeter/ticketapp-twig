@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — TicketApp</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body class="bg-white text-gray-800 antialiased">
+  <header class="container-center py-4">
+  <nav style="display:flex;align-items:center;justify-content:space-between;">
+    <div class="flex items-center">
+      <a href="/" style="font-weight:700;font-size:1.1rem;text-decoration:none;color:inherit;">TicketApp</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/dashboard" class="hidden-md">Dashboard</a>
+      <a href="/tickets" class="hidden-md">Tickets</a>
+      <a href="/auth/login" class="btn-outline">Login</a>
+      <a href="/auth/signup" class="btn">Get Started</a>
+      <button id="logoutBtn" style="display:none;" aria-hidden="true" class="btn">Logout</button>
+    </div>
+  </nav>
+</header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+  <div class="container-center" style="position:relative;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;">
+      <div>
+        <h1 id="heroTitle" style="font-size:2rem;margin:0 0 12px 0;">TicketApp</h1>
+        <p style="margin:0 0 16px 0;color:#6b7280;">Manage support tickets fast. Same UX in React, Vue & Twig.</p>
+        <div style="display:flex;gap:12px;">
+          <a href="/auth/login" class="btn">Login</a>
+          <a href="/auth/signup" class="btn-outline">Get Started</a>
+        </div>
+      </div>
+
+      <div style="position:relative;">
+        <!-- decorative circles -->
+        <div class="circle" style="width:160px;height:160px;right:-40px;top:20px;background:#6b7cff;position:absolute;border-radius:9999px;"></div>
+        <div class="circle" style="width:80px;height:80px;left:20px;top:120px;background:#ffc2c2;position:absolute;border-radius:9999px;"></div>
+
+        <div class="card" style="padding:1rem;">
+          <h3 style="margin:0 0 6px 0;">Why TicketApp?</h3>
+          <p style="margin:0;color:#6b7280;">Fast to set up, accessible, consistent layout, with full CRUD and validation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave svg -->
+  <svg class="wave-bottom" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#fff" d="M0,0 C200,100 500,100 720,60 C940,20 1240,80 1440,60 L1440,120 L0,120 Z" />
+  </svg>
+</section>
+  </main>
+
+  <footer class="container-center py-8">
+  <div class="card" style="text-align:center;font-size:0.9rem;">
+    © 2025 TicketApp — Built with Twig
+  </div>
+</footer>
+
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>

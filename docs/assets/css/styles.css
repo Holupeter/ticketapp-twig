@@ -1,0 +1,33 @@
+:root{
+  --max-w: 1440px;
+  --color-open: #1ea34a;
+  --color-in_progress: #ffb020;
+  --color-closed: #707070;
+  --accent: #6b7cff;
+  --bg: #f8fafc;
+  --radius: 12px;
+  --shadow: 0 8px 20px rgba(20,20,40,0.06);
+}
+
+/* Hero and decorative rules */
+.container-center{ max-width: var(--max-w); margin-left:auto; margin-right:auto; padding:0 1rem; }
+.hero { position: relative; padding: 5rem 0 8rem; background: linear-gradient(180deg,#fff,#f6f8ff 60%); }
+.wave-bottom { position:absolute; left:0; right:0; bottom:-1px; height:120px; pointer-events:none; }
+.circle { position:absolute; border-radius:9999px; opacity:0.12; }
+
+/* Card and badges */
+.card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem; }
+.status-open { background: rgba(30,163,74,0.08); color: var(--color-open); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
+.status-in_progress { background: rgba(255,176,32,0.09); color: var(--color-in_progress); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
+.status-closed { background: rgba(112,112,112,0.07); color: var(--color-closed); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
+
+/* Focus and accessibility */
+:focus { outline: 3px solid rgba(99,102,241,0.16); outline-offset: 2px; }
+
+/* Simple button */
+.btn { display:inline-block; padding:0.5rem 0.9rem; background:var(--accent); color:white; border-radius:8px; text-decoration:none; }
+.btn-outline { display:inline-block; padding:0.45rem 0.8rem; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none; }
+
+/* Toast container (basic) */
+.toast { position:fixed; top:1rem; right:1rem; background:#111827; color:white; padding:0.6rem 0.9rem; border-radius:8px; opacity:0; transform:translateY(-6px); transition: all 220ms ease; z-index:9999; }
+.toast.visible { opacity:1; transform:none; }
