@@ -1,22 +1,27 @@
 /* public/assets/js/app.js
-   Client logic for auth, protected routes, tickets CRUD, toasts and inline validation.
-   Uses localStorage keys:
-     - ticketapp_session
-     - ticketapp_tickets
+   Updated: includes header toggling logic that reads localStorage key `ticketapp_session`
+   and shows/hides the correct navigation links depending on login state and current page.
+   Also retains ticket CRUD + auth simulation logic from the original file.
 */
 
-// IIFE to scope
 (function () {
   const SESSION_KEY = 'ticketapp_session';
   const TICKETS_KEY = 'ticketapp_tickets';
   const ALLOWED_STATUSES = ['open', 'in_progress', 'closed'];
 
-  // --- Session helpers ---
+  // --- Session helpers (localStorage) ---
   function setSession(obj) { localStorage.setItem(SESSION_KEY, JSON.stringify(obj)); }
-  function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; } }
+  function getSession() {
+    try {
+      const s = JSON.parse(localStorage.getItem(SESSION_KEY));
+      return s;
+    } catch (e) {
+      return null;
+    }
+  }
   function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
-  // --- Tickets helpers ---
+  // --- Tickets helpers (localStorage) ---
   function readTickets() { try { return JSON.parse(localStorage.getItem(TICKETS_KEY)) || []; } catch(e) { return []; } }
   function saveTickets(arr) { localStorage.setItem(TICKETS_KEY, JSON.stringify(arr)); }
   function createTicket(payload) {
@@ -36,14 +41,13 @@
     return items;
   }
 
-  // --- Simple toast/snackbar ---
+  // --- Toast/snackbar ---
   function showToast(message, type='info', ms=3500) {
     const el = document.createElement('div');
     el.className = 'toast ' + (type || '');
     el.textContent = message;
     el.setAttribute('role', 'status');
     document.body.appendChild(el);
-    // show
     requestAnimationFrame(()=> el.classList.add('visible'));
     setTimeout(()=> {
       el.classList.remove('visible');
@@ -51,23 +55,55 @@
     }, ms);
   }
 
-  // --- Helpers for escaping -->
+  // --- Escape helper ---
   function escapeHtml(str) {
     return String(str || '').replace(/[&<>"']/g, function (m) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]; });
   }
 
-  // --- Protected route guard ---
-  function guardProtectedPages() {
-    // pages that require session should include data-protected="true" on the page root (we add that in templates)
-    const protectedNode = document.querySelector('[data-protected="true"]');
-    if (!protectedNode) return;
+  // --- Header toggling (new) ---
+  function updateHeader() {
     const session = getSession();
+    const navGuest = document.getElementById('nav-guest');
+    const navAuth = document.getElementById('nav-auth');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // default show guest nav
+    if (!navGuest || !navAuth) return;
+
     const now = Date.now();
-    if (!session || !session.token || (session.expires && now > session.expires)) {
-      clearSession();
-      showToast('Your session has expired — please log in again.', 'error', 4000);
-      // redirect to login after slight delay so toast can be read
-      setTimeout(()=> window.location.href = '/auth/login', 900);
+    const validSession = session && session.token && (!session.expires || now < session.expires);
+
+    if (validSession) {
+      navGuest.style.display = 'none';
+      navAuth.style.display = 'flex';
+      if (logoutBtn) logoutBtn.style.display = 'inline-block';
+      // page-specific adjustments
+      const path = (window.location.pathname || '/').replace(/\/$/,'');
+      // default: show both Ticket and Dashboard
+      const elTicket = navAuth.querySelector('[data-nav="tickets"]');
+      const elDashboard = navAuth.querySelector('[data-nav="dashboard"]');
+      if (elTicket) elTicket.style.display = 'inline-block';
+      if (elDashboard) elDashboard.style.display = 'inline-block';
+
+      if (path === '/dashboard' || path === '/dashboard/index.php') {
+        // On dashboard page: show Ticket & Logout only
+        if (elTicket) elTicket.style.display = 'inline-block';
+        if (elDashboard) elDashboard.style.display = 'none';
+      } else if (path === '/tickets' || path === '/tickets/index.php') {
+        // On tickets page: show Dashboard & Logout only
+        if (elTicket) elTicket.style.display = 'none';
+        if (elDashboard) elDashboard.style.display = 'inline-block';
+      } else {
+        // other logged-in pages: show both
+        if (elTicket) elTicket.style.display = 'inline-block';
+        if (elDashboard) elDashboard.style.display = 'inline-block';
+      }
+
+    } else {
+      // not logged in
+      navGuest.style.display = 'flex';
+      navAuth.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'none';
     }
   }
 
@@ -87,7 +123,7 @@
     if (existing) existing.remove();
   }
 
-  // --- Render tickets list into container #ticketsContainer ---
+  // --- Render tickets list ---
   function renderTicketsList() {
     const container = document.querySelector('#ticketsContainer');
     if (!container) return;
@@ -124,7 +160,6 @@
       container.appendChild(el);
     });
 
-    // attach event handlers
     container.querySelectorAll('button[data-action]').forEach(btn=>{
       btn.addEventListener('click', (e)=>{
         const id = btn.getAttribute('data-id');
@@ -153,39 +188,42 @@
     window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 20, behavior:'smooth' });
   }
 
-  // --- Form handlers (login/signup/ticket) ---
+  // --- DOM ready ---
   document.addEventListener('DOMContentLoaded', function () {
-    guardProtectedPages();
+    // ensure header is correct on load
+    updateHeader();
 
-    // Header logout button (if present)
-    const logoutBtn = document.querySelector('#logoutBtn');
+    // expose logout (if present)
+    const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', function () {
         clearSession();
-        showToast('Logged out', 'info');
-        setTimeout(()=> location.href = '/', 600);
+        showToast('Logged out', 'info', 1200);
+        // update header immediately then redirect
+        updateHeader();
+        setTimeout(()=> location.href = '/', 700);
       });
     }
 
-    // Login form
+    // Login form handler (if present)
     const loginForm = document.querySelector('#loginForm');
     if (loginForm) {
       loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const email = loginForm.email.value.trim();
         const password = loginForm.password.value;
-        // basic validation
         if (!email || !password) { showFieldError(loginForm.email, 'Please provide email and password'); return; }
         if (password.length < 4) { showFieldError(loginForm.password, 'Password too short'); return; }
-        // simulate success
         const session = { email, token: Math.random().toString(36).slice(2), expires: Date.now() + (1000 * 60 * 60) };
         setSession(session);
-        showToast('Login successful', 'success');
-        setTimeout(()=> location.href = '/dashboard', 600);
+        showToast('Login successful', 'success', 900);
+        // update header (in case page doesn't reload immediately)
+        updateHeader();
+        setTimeout(()=> location.href = '/dashboard', 700);
       });
     }
 
-    // Signup form
+    // Signup form handler (if present)
     const signupForm = document.querySelector('#signupForm');
     if (signupForm) {
       signupForm.addEventListener('submit', function (e) {
@@ -196,12 +234,13 @@
         if (password.length < 4) { showFieldError(signupForm.password, 'Password too short'); return; }
         const session = { email, token: Math.random().toString(36).slice(2), expires: Date.now() + (1000 * 60 * 60) };
         setSession(session);
-        showToast('Account created', 'success');
+        showToast('Account created', 'success', 900);
+        updateHeader();
         setTimeout(()=> location.href = '/dashboard', 700);
       });
     }
 
-    // Ticket form
+    // Ticket form handler (if present)
     const ticketForm = document.querySelector('#ticketForm');
     if (ticketForm) {
       ticketForm.addEventListener('submit', function (e) {
@@ -218,13 +257,12 @@
         try {
           if (id) {
             updateTicket(id, { title, status, description });
-            showToast('Ticket updated', 'success');
+            showToast('Ticket updated', 'success', 900);
           } else {
             createTicket({ title, status, description });
-            showToast('Ticket created', 'success');
+            showToast('Ticket created', 'success', 900);
             ticketForm.reset();
           }
-          // refresh list if present
           renderTicketsList();
         } catch (err) {
           console.error(err);
@@ -233,19 +271,27 @@
       });
     }
 
+    // Reset ticket form button (if present)
+    const resetTicket = document.getElementById('resetTicket');
+    if (resetTicket) {
+      resetTicket.addEventListener('click', function () {
+        const form = document.querySelector('#ticketForm');
+        if (form) form.reset();
+      });
+    }
+
     // If on tickets page, render list
     if (document.querySelector('#ticketsContainer')) {
       renderTicketsList();
     }
 
-    // On dashboard page, update stats
-    if (document.querySelector('#dashboardStats')) {
+    // If on dashboard page, render stats (if function available)
+    if (typeof renderDashboardStats === 'function' && document.querySelector('#dashboardStats')) {
       renderDashboardStats();
     }
-
   }); // DOMContentLoaded
 
-  // --- Dashboard stats renderer ---
+  // --- Dashboard stats renderer (kept from original) ---
   function renderDashboardStats() {
     const node = document.querySelector('#dashboardStats');
     if (!node) return;
@@ -269,11 +315,11 @@
     `;
   }
 
-  // Expose small debug API (optional)
+  // Expose small API for debugging
   window.ticketapp = {
     getSession, setSession, clearSession,
     readTickets, saveTickets, createTicket, updateTicket, deleteTicket,
-    showToast
+    showToast, updateHeader
   };
 
 })();

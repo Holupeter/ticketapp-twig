@@ -1,27 +1,30 @@
-{% extends 'base.twig' %}
-{% block title %}Login — TicketApp{% endblock %}
+{% extends "base.twig" %}
+
+{% block title %}Login | Ticket App{% endblock %}
+
 {% block content %}
-<section class="container-center py-12">
-  <div style="max-width:720px;margin:0 auto;">
-    <div class="card" style="padding:1rem;">
-      <h2 style="margin:0 0 8px 0;">Login</h2>
-      <form id="loginForm" novalidate>
-        <div style="margin-bottom:8px;">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required style="width:100%;padding:8px;margin-top:6px;border:1px solid #e5e7eb;border-radius:6px;">
-        </div>
-
-        <div style="margin-bottom:8px;">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" required style="width:100%;padding:8px;margin-top:6px;border:1px solid #e5e7eb;border-radius:6px;">
-        </div>
-
-        <div style="margin-top:12px;display:flex;gap:8px;">
-          <button type="submit" class="btn">Login</button>
-          <a href="/" class="btn-outline">Back</a>
-        </div>
-      </form>
+<div class="auth-container">
+  <h2>Login</h2>
+  <form id="loginForm" method="post" action="/login">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      <small class="error" id="emailError"></small>
     </div>
-  </div>
-</section>
+
+    <div class="form-group password-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      <span class="toggle-password" data-target="password">👁️</span>
+      <small class="error" id="passwordError"></small>
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit" class="btn-primary">Login</button>
+      <a href="/" class="btn-outline">Back</a>
+    </div>
+  </form>
+</div>
+
+<script src="/assets/js/validation.js"></script>
 {% endblock %}

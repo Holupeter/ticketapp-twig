@@ -1,20 +1,46 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>{% block title %}TicketApp{% endblock %}</title>
+
+  {# correct CSS path per your repo layout #}
   <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
-<body class="bg-white text-gray-800 antialiased">
-  {% include 'partials/header.twig' %}
+<body>
+  <header>
+    <div class="container header-content">
+      <!-- Logo always links to home -->
+      <a href="/" id="logoBtn" class="logo-btn">Ticket App</a>
+
+      <!-- Guest navigation (shown when NOT logged in) -->
+      <nav id="nav-guest" class="nav-group" aria-label="guest navigation">
+        <a href="/dashboard" class="nav-btn">Ticket Dashboard</a>
+        <a href="/auth/login" class="nav-btn">Login</a>
+        <a href="/auth/signup" class="nav-btn primary-btn">Get Started</a>
+      </nav>
+
+      <!-- Authenticated navigation (shown when logged in) -->
+      <nav id="nav-auth" class="nav-group" aria-label="authenticated navigation" style="display:none;">
+        <a href="/tickets" class="nav-btn" data-nav="tickets">Ticket</a>
+        <a href="/dashboard" class="nav-btn" data-nav="dashboard">Dashboard</a>
+        <button id="logoutBtn" class="nav-btn">Logout</button>
+      </nav>
+    </div>
+  </header>
 
   <main>
     {% block content %}{% endblock %}
   </main>
 
-  {% include 'partials/footer.twig' %}
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; {{ "now"|date("Y") }} TicketApp — Built with Twig</p>
+    </div>
+  </footer>
 
+  {# App script: updated app.js handles header visibility and session logic #}
   <script src="/assets/js/app.js" defer></script>
 </body>
 </html>

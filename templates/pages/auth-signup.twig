@@ -1,28 +1,37 @@
-{% extends 'base.twig' %}
-{% block title %}Sign up — TicketApp{% endblock %}
+{% extends "base.twig" %}
+
+{% block title %}Get Started | Ticket App{% endblock %}
+
 {% block content %}
-<section class="container-center py-12">
-  <div style="max-width:720px;margin:0 auto;">
-    <div class="card" style="padding:1rem;">
-      <h2 style="margin:0 0 8px 0;">Create your account</h2>
-      <form id="signupForm" novalidate>
-        <div style="margin-bottom:8px;">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required style="width:100%;padding:8px;margin-top:6px;border:1px solid #e5e7eb;border-radius:6px;">
-        </div>
-
-        <div style="margin-bottom:8px;">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" required style="width:100%;padding:8px;margin-top:6px;border:1px solid #e5e7eb;border-radius:6px;">
-          <small style="color:#9ca3af;">Use at least 4 characters for this demo.</small>
-        </div>
-
-        <div style="margin-top:12px;display:flex;gap:8px;">
-          <button type="submit" class="btn">Create account</button>
-          <a href="/auth/login" class="btn-outline">Login</a>
-        </div>
-      </form>
+<div class="auth-container">
+  <h2>Create Account</h2>
+  <form id="signupForm" method="post" action="/register">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      <small class="error" id="emailError"></small>
     </div>
-  </div>
-</section>
+
+    <div class="form-group password-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required />
+      <span class="toggle-password" data-target="password">👁️</span>
+      <small class="error" id="passwordError"></small>
+    </div>
+
+    <div class="form-group password-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required />
+      <span class="toggle-password" data-target="confirmPassword">👁️</span>
+      <small class="error" id="confirmError"></small>
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit" class="btn-primary">Create Account</button>
+      <a href="/login" class="btn-outline">Back to Login</a>
+    </div>
+  </form>
+</div>
+
+<script src="/assets/js/validation.js"></script>
 {% endblock %}

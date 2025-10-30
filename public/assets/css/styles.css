@@ -1,33 +1,354 @@
+/* ---------- GLOBAL ---------- */
 :root{
-  --max-w: 1440px;
-  --color-open: #1ea34a;
-  --color-in_progress: #ffb020;
-  --color-closed: #707070;
-  --accent: #6b7cff;
-  --bg: #f8fafc;
-  --radius: 12px;
-  --shadow: 0 8px 20px rgba(20,20,40,0.06);
+  --accent: #004aad;
+  --accent-2: #0066ff;
+  --bg: #f5f6fa;
+  --radius: 10px;
 }
 
-/* Hero and decorative rules */
-.container-center{ max-width: var(--max-w); margin-left:auto; margin-right:auto; padding:0 1rem; }
-.hero { position: relative; padding: 5rem 0 8rem; background: linear-gradient(180deg,#fff,#f6f8ff 60%); }
-.wave-bottom { position:absolute; left:0; right:0; bottom:-1px; height:120px; pointer-events:none; }
-.circle { position:absolute; border-radius:9999px; opacity:0.12; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #111827;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
 
-/* Card and badges */
-.card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1rem; }
-.status-open { background: rgba(30,163,74,0.08); color: var(--color-open); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
-.status-in_progress { background: rgba(255,176,32,0.09); color: var(--color-in_progress); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
-.status-closed { background: rgba(112,112,112,0.07); color: var(--color-closed); padding:0.35rem 0.7rem; border-radius:9999px; font-weight:600; }
+main {
+  flex: 1;
+  padding: 2rem 0;
+  /* leave room for fixed footer */
+  padding-bottom: 100px;
+}
 
-/* Focus and accessibility */
-:focus { outline: 3px solid rgba(99,102,241,0.16); outline-offset: 2px; }
+/* ---------- CONTAINER ---------- */
+.container {
+  width: 92%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
-/* Simple button */
-.btn { display:inline-block; padding:0.5rem 0.9rem; background:var(--accent); color:white; border-radius:8px; text-decoration:none; }
-.btn-outline { display:inline-block; padding:0.45rem 0.8rem; border:1px solid #e5e7eb; border-radius:8px; text-decoration:none; }
+/* ---------- HEADER ---------- */
+header {
+  background: #fff;
+  color: #000;
+  padding: 0.8rem 0;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
-/* Toast container (basic) */
-.toast { position:fixed; top:1rem; right:1rem; background:#111827; color:white; padding:0.6rem 0.9rem; border-radius:8px; opacity:0; transform:translateY(-6px); transition: all 220ms ease; z-index:9999; }
-.toast.visible { opacity:1; transform:none; }
+.main-header {
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 3rem;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo-btn {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.logo-btn:hover {
+  color: #007bff;
+}
+
+
+/* nav groups */
+.nav-group {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.nav-btn,
+.btn-primary,
+.btn-outline {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-btn,
+.btn-primary {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-btn {
+  color: #000;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem; /* guarantees visible space between Ticket and Dashboard */
+  flex-wrap: wrap; /* prevents overlap on small screens */
+}
+
+.nav-btn:hover {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+/* ---------- HERO/FEATURES (optional, keep your previous rules if present) ---------- */
+
+.hero {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  color: #fff;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.features {
+  background: #fff;
+  padding: 3rem 1rem;
+  margin-top: -40px; /* if you want overlap with hero; remove if not desired */
+  box-shadow: 0 6px 20px rgba(20,20,40,0.04);
+  border-radius: 12px;
+}
+
+.features-section {
+  background: #f9f9f9;
+  padding: 4rem 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-box {
+  background: #fff;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.feature-box h3 {
+  color: #007bff;
+  margin-bottom: 0.8rem;
+}
+
+/* ---------- CARDS, TOASTS, small UI ---------- */
+.card { background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 8px 20px rgba(20,20,40,0.06); }
+
+/* toast */
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(17,24,39,0.95);
+  color: #fff;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: all 220ms ease;
+  z-index: 9999;
+}
+.toast.visible { opacity: 1; transform: none; }
+
+/* ---------- FOOTER (fixed at bottom) ---------- */
+footer {
+  background: #fff;
+  color: #000;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+  padding: 0.9rem 0;
+  z-index: 40;
+}
+
+.main-footer {
+  background: #ffffff;
+  border-top: 1px solid #eaeaea;
+  text-align: center;
+  padding: 1rem 0;
+  color: #000;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content { text-align: center; font-size: 0.95rem; }
+/* ---------- AUTH FORMS ---------- */
+.auth-container {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  margin: 3rem auto;
+  max-width: 450px;
+  border-radius: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #004aad;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  border-color: #004aad;
+  outline: none;
+}
+
+.password-group {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.toggle-password:hover {
+  color: #004aad;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  display: block;
+}
+
+/* Buttons */
+
+.primary-btn {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+}
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+  border: 2px solid #007bff;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+  border: 2px solid #007bff;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-outline:hover {
+  background: #fff;
+  color: #007bff;
+}
+
+.primary-btn:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #0066ff, #004aad);
+  transform: translateY(-2px);
+}
+
+.btn-outline:hover {
+  background: #004aad;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
